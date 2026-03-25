@@ -35,7 +35,7 @@ export type EffortOption = {
 };
 
 export type ContextWindowOption = {
-  /** API suffix appended to the model slug (e.g. `""` for default, `"[1m]"` for 1M). */
+  /** Semantic identifier stored in model options (e.g. `"200k"`, `"1m"`). */
   readonly value: string;
   readonly label: string;
   readonly isDefault?: true;
@@ -173,8 +173,8 @@ export const MODEL_OPTIONS_BY_PROVIDER = {
         supportsFastMode: true,
         supportsThinkingToggle: false,
         contextWindowOptions: [
-          { value: "", label: "200k", isDefault: true },
-          { value: "[1m]", label: "1M" },
+          { value: "200k", label: "200k", isDefault: true },
+          { value: "1m", label: "1M" },
         ],
         promptInjectedEffortLevels: ["ultrathink"],
       },
@@ -192,8 +192,8 @@ export const MODEL_OPTIONS_BY_PROVIDER = {
         supportsFastMode: false,
         supportsThinkingToggle: false,
         contextWindowOptions: [
-          { value: "", label: "200k", isDefault: true },
-          { value: "[1m]", label: "1M" },
+          { value: "200k", label: "200k", isDefault: true },
+          { value: "1m", label: "1M" },
         ],
         promptInjectedEffortLevels: ["ultrathink"],
       },

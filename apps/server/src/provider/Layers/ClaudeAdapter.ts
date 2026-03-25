@@ -44,7 +44,7 @@ import {
   hasEffortLevel,
   applyClaudePromptEffortPrefix,
   getModelCapabilities,
-  resolveClaudeApiModelId,
+  resolveApiModelId,
   trimOrNull,
 } from "@t3tools/shared/model";
 import {
@@ -2731,9 +2731,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
         const providerOptions = input.providerOptions?.claudeAgent;
         const modelSelection =
           input.modelSelection?.provider === "claudeAgent" ? input.modelSelection : undefined;
-        const apiModelId = modelSelection?.model
-          ? resolveClaudeApiModelId(modelSelection.model, modelSelection.options)
-          : undefined;
+        const apiModelId = modelSelection ? resolveApiModelId(modelSelection) : undefined;
         const requestedEffort = trimOrNull(modelSelection?.options?.effort ?? null);
         const caps = getModelCapabilities("claudeAgent", modelSelection?.model);
         const effort =
@@ -2907,7 +2905,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
         }
 
         if (modelSelection?.model) {
-          const apiModelId = resolveClaudeApiModelId(modelSelection.model, modelSelection.options);
+          const apiModelId = resolveApiModelId(modelSelection);
           yield* Effect.tryPromise({
             try: () => context.query.setModel(apiModelId),
             catch: (cause) => toRequestError(input.threadId, "turn/setModel", cause),
