@@ -1,4 +1,11 @@
-import { memo, useState, useCallback, useRef, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { Schema } from "effect";
 import { type TimestampFormat } from "@t3tools/contracts/settings";
 import { Badge } from "./ui/badge";
@@ -138,6 +145,17 @@ const PlanSidebar = memo(function PlanSidebar({
     if (didResizeDuringDragRef.current) {
       setLocalStorageItem(PLAN_SIDEBAR_WIDTH_STORAGE_KEY, sidebarWidthRef.current, Schema.Finite);
     }
+  }, []);
+
+  // Clean up body styles if the component unmounts mid-drag (e.g. sidebar closed
+  // while resizing). Without this, cursor and user-select overrides leak permanently.
+  // Mirrors the same cleanup pattern in SidebarRail.
+  useEffect(() => {
+    return () => {
+      resizeStateRef.current = null;
+      document.body.style.removeProperty("cursor");
+      document.body.style.removeProperty("user-select");
+    };
   }, []);
 
   const planMarkdown = activeProposedPlan?.planMarkdown ?? null;
