@@ -47,8 +47,13 @@ function clampSidebarWidth(width: number): number {
 }
 
 function readStoredWidth(): number {
-  const stored = getLocalStorageItem(PLAN_SIDEBAR_WIDTH_STORAGE_KEY, Schema.Finite);
-  return stored !== null ? clampSidebarWidth(stored) : PLAN_SIDEBAR_DEFAULT_WIDTH;
+  try {
+    const stored = getLocalStorageItem(PLAN_SIDEBAR_WIDTH_STORAGE_KEY, Schema.Finite);
+    return stored !== null ? clampSidebarWidth(stored) : PLAN_SIDEBAR_DEFAULT_WIDTH;
+  } catch (error) {
+    console.error("[LOCALSTORAGE] Error:", error);
+    return PLAN_SIDEBAR_DEFAULT_WIDTH;
+  }
 }
 
 function stepStatusIcon(status: string): React.ReactNode {
